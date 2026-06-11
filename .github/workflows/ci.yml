@@ -6,6 +6,12 @@ on:
       - main
   pull_request:
 
+# Cancel superseded runs on the same ref (e.g. rapid pushes to a PR branch) so
+# CI minutes aren't spent on commits that have already been replaced.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
     name: Quality checks (Node ${{ matrix.node-version }})
